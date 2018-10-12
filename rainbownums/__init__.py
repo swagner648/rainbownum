@@ -1,2 +1,2 @@
-from .RainbowSumsSim import RainbowSumsSim
-from .RainbowProductsSim import RainbowProductsSim
+from .RainbowSumsSim import RbSumsEq
+from .RainbowProductsSim import RbSumsEq
