@@ -1,7 +1,7 @@
 from .RainbowSim import RainbowSim
 
 
-class RainbowSumsSim(RainbowSim):
+class RbSumsEq(RainbowSim):
     def __init__(self, k, n, mod):
         self.mod = mod
         self.sums = [0 for _ in range(n)]
