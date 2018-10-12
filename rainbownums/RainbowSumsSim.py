@@ -9,7 +9,10 @@ class RbSumsEq(RainbowSim):
         self.generate_sums()
 
     def generate_sums(self):
-        values = list(range(self.k-1))
+        if self.mod:
+            values = list(range(self.k))
+        else:
+            values = list(range(1, self.k + 1));
         self.recur_gen_sums(self.sums, values, 0)
 
     def recur_gen_sums(self, sums, values, loop):
