@@ -9,7 +9,10 @@ class RbProductsEq(RainbowSim):
         self.generate_products()
 
     def generate_products(self):
-        values = list(range(self.k - 1))
+        if self.mod:
+            values = list(range(self.k))
+        else:
+            values = list(range(1, self.k + 1))
         self.recur_gen_products(self.products, values, 0)
 
     def recur_gen_products(self, products, values, loop):
