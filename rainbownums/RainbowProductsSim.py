@@ -5,7 +5,7 @@ class RbProductsEq(RainbowSim):
     def __init__(self, k, n, mod):
         self.mod = mod
         self.products = [0 for _ in range(n)]
-        super(RainbowProductsSim, self).__init__(k, n, self.products)
+        super(RbProductsEq, self).__init__(k, n, self.products)
         self.generate_products()
 
     def generate_products(self):
