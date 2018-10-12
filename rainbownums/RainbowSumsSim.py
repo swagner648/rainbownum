@@ -5,7 +5,7 @@ class RbSumsEq(RainbowSim):
     def __init__(self, k, n, mod):
         self.mod = mod
         self.sums = [0 for _ in range(n)]
-        super(RainbowSumsSim, self).__init__(k, n , self.sums)
+        super(RbSumsEq, self).__init__(k, n , self.sums)
         self.generate_sums()
 
     def generate_sums(self):
