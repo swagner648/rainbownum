@@ -1,7 +1,7 @@
 from .RainbowSim import RainbowSim
 
 
-class RainbowProductsSim(RainbowSim):
+class RbProductsEq(RainbowSim):
     def __init__(self, k, n, mod):
         self.mod = mod
         self.products = [0 for _ in range(n)]
