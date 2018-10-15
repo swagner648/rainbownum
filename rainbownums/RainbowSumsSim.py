@@ -19,11 +19,11 @@ class RbSumsEq(RainbowSim):
         k = self.k - 1
         if loop == k:
             return
-        while values[loop] <= self.n - k + loop:
+        while values[loop] <= self.n - k + loop + 1:
             self.recur_gen_sums(sums, values, loop + 1)
             if loop == k - 1:
                 sum = 0
-                out = [0 for _ in range(k + 1)]
+                out = [0 for _ in range(self.k)]
                 for i in range(len(values)):
                     sum = sum + values[i]
                     out[i] = values[i]
