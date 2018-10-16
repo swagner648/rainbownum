@@ -19,7 +19,11 @@ class RbProductsEq(RainbowSim):
         k = self.k - 1
         if loop == k:
             return
-        while values[loop] <= self.n - k + loop + 1:
+        if self.mod:
+            stop_case = self.n - k + loop
+        else:
+            stop_case = self.n - k + loop + 1
+        while values[loop] <= stop_case:
             self.recur_gen_products(products, values, loop + 1)
             if loop == k - 1:
                 product = 1
