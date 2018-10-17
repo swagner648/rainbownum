@@ -4,10 +4,33 @@ import time
 
 
 class RainbowSim:
-    def __init__(self, k, n, sets):
+    def __init__(self, k, n, a, b):
+        if type(k) is not int:
+            raise TypeError("Scalar k must be an integer greater than or equal to 3.")
+        if k < 3:
+            raise ValueError("Scalar k must be greater than or equal to 3.")
         self.k = k
+
+        if type(k) is not int:
+            raise TypeError("Scalar n must be an integer greater than or equal to 1")
+        if k < 1:
+            raise ValueError("Scalar k must be greater than or equal to 1.")
         self.n = n
-        self.sets = sets
+
+        for i in a:
+            if type(i) is not int:
+                raise TypeError("Vector a[] can only contain nonzero integers")
+            if i is 0:
+                raise ValueError("Vector a[] cannot contain 0 elements.")
+        if len(a) is not k:
+            raise IndexError("Vector a[] must have a length of k.")
+        self.a = a
+
+        if type(b) is not int:
+            raise TypeError("Scalar b must be an integer.")
+        self.b = b
+
+        self.sets = [0 for _ in range(n)]
         for i in range(n):
             self.sets[i] = SetLinkedList()
 

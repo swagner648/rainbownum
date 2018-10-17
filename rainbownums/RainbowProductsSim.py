@@ -2,10 +2,17 @@ from .RainbowSim import RainbowSim
 
 
 class RbProductsEq(RainbowSim):
-    def __init__(self, k, n, mod):
+    def __init__(self, k, n, a, b, mod):
+        super(RbSumsEq, self).__init__(k, n, a, b)
+        self.products = self.sets
+
+        if self.b is 0:
+            raise ValueError("Scalar b must be a nonzero integer.")
+
+        if type(mod) is not bool:
+            raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
         self.mod = mod
-        self.products = [0 for _ in range(n)]
-        super(RbProductsEq, self).__init__(k, n, self.products)
+
         self.generate_products()
 
     def generate_products(self):
@@ -15,7 +22,7 @@ class RbProductsEq(RainbowSim):
             values = list(range(1, self.k))
         self.recur_gen_products(self.products, values, 0)
 
-    def recur_gen_products(self, products, values, loop):
+    def recur_gen_products(self, products, a, b, values, loop):
         k = self.k - 1
         if loop == k:
             return
@@ -32,6 +39,7 @@ class RbProductsEq(RainbowSim):
                     product = product * values[i]
                     out[i] = values[i]
                 unique = True
+                product = int(b/(a[k]*products))
                 for i in range(len(values)):
                     if out[i] == product % self.n or out[i] == product:
                         unique = False
