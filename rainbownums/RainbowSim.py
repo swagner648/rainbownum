@@ -12,7 +12,7 @@ class RainbowSim:
         self.k = k
 
         if type(k) is not int:
-            raise TypeError("Scalar n must be an integer greater than or equal to 1")
+            raise TypeError("Scalar n must be an integer greater than or equal to 1.")
         if k < 1:
             raise ValueError("Scalar k must be greater than or equal to 1.")
         self.n = n
