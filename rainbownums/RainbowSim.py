@@ -21,7 +21,7 @@ class RainbowSim:
             if type(i) is not int:
                 raise TypeError("Vector a[] can only contain nonzero integers")
             if i is 0:
-                raise ValueError("Vector a[] cannot contain 0 elements.")
+                raise ValueError("Vector a[] cannot contain 0-value elements.")
         if len(a) is not k:
             raise IndexError("Vector a[] must have a length of k.")
         self.a = a
