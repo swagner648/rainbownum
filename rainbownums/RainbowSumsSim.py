@@ -50,7 +50,6 @@ class RbSumsEq(RainbowSim):
                     else:
                         unique = False
                 if unique:
-                    print(out)
                     for i in range(self.k):
                         sums[out[i]].add_set(out)
             values[loop] = values[loop] + 1
