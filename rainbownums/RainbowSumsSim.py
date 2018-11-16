@@ -35,21 +35,24 @@ class RbSumsEq(RainbowSim):
                 for i in range(len(values)):
                     sum = sum + a[i] * values[i]
                     out[i] = values[i]
-                unique = True
-                sum = int(((sum - b)/(-a[k])))
+                valid = True
+                sum = ((sum - b) / (-a[k]))
+                if sum % 1 != 0:
+                    valid = False
+                sum = int(sum)
                 for i in range(len(values)):
                     if out[i] == sum % self.n or out[i] == sum:
-                        unique = False
+                        valid = False
                 if self.mod:
                     out[k] = sum % self.n
                 else:
-                    if sum <= self.n and sum > 1:
+                    if 1 < sum <= self.n:
                         out[k] = sum
                         for i in range(self.k):
                             out[i] = out[i] - 1
                     else:
-                        unique = False
-                if unique:
+                        valid = False
+                if valid:
                     for i in range(self.k):
                         sums[out[i]].add_set(out)
             values[loop] = values[loop] + 1
