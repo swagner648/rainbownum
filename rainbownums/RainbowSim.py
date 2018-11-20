@@ -4,17 +4,11 @@ import time
 
 
 class RainbowSim:
-    def __init__(self, k, n, a, b):
-        if type(k) is not int:
-            raise TypeError("Scalar k must be an integer greater than or equal to 3.")
-        if k < 3:
-            raise ValueError("Scalar k must be greater than or equal to 3.")
-        self.k = k
-
-        if type(k) is not int:
-            raise TypeError("Scalar n must be an integer greater than or equal to 1.")
-        if k < 1:
-            raise ValueError("Scalar k must be greater than or equal to 1.")
+    def __init__(self, n, a, b):
+        if type(n) is not int:
+            raise TypeError("Scalar n must be an integer greater than or equal to 1")
+        if n < 1:
+            raise ValueError("Scalar n must be greater than or equal to 1.")
         self.n = n
 
         for i in a:
@@ -22,9 +16,8 @@ class RainbowSim:
                 raise TypeError("Vector a[] can only contain nonzero integers")
             if i is 0:
                 raise ValueError("Vector a[] cannot contain 0-value elements.")
-        if len(a) is not k:
-            raise IndexError("Vector a[] must have a length of k.")
         self.a = a
+        self.k = len(a)
 
         if type(b) is not int:
             raise TypeError("Scalar b must be an integer.")
@@ -107,7 +100,24 @@ class RainbowSim:
 
     def print_extreme_colorings(self):
         if self.start != -1:
-            print(self.colorings)
+            print('Extreme Colorings:\n', self.colorings)
+
+    def print_sets(self):
+        print('Sums Generated:', end='')
+        for n in range(self.n):
+            if self.mod:
+                temp = self.sets[n].head.next
+                print('\n', n, ':', temp, end='')
+                while temp is not None:
+                    print(',', temp, end='')
+                    temp = temp.next
+            else:
+                temp = [i+1 for i in self.sets[n].head.next]
+                print('\n', n+1, ':', temp, end='')
+                while temp is not None:
+                    print(',', temp, end='')
+                    temp = [i + 1 for i in temp.next]
+        print()
 
     def set_time_limit(self, t):
         self.timeLimit = t

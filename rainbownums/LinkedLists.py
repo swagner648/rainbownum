@@ -1,7 +1,14 @@
 class Set:
     def __init__(self, set, next):
+        # try:
+        #     self.data = [s+1 for s in set]
+        # except TypeError:
+        #     self.data = set
         self.data = set
         self.next = next
+
+    def __repr__(self):
+        return str(self.data)
 
 
 class SetLinkedList:

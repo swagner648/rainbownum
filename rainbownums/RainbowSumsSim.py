@@ -2,8 +2,8 @@ from .RainbowSim import RainbowSim
 
 
 class RbSumsEq(RainbowSim):
-    def __init__(self, k, n, a, b, mod):
-        super(RbSumsEq, self).__init__(k, n, a, b)
+    def __init__(self, n, a, b, mod):
+        super(RbSumsEq, self).__init__(n, a, b)
         self.sums = self.sets
 
         if type(mod) is not bool:
@@ -36,17 +36,23 @@ class RbSumsEq(RainbowSim):
                     sum = sum + a[i] * values[i]
                     out[i] = values[i]
                 valid = True
-                sum = ((sum - b) / (-a[k]))
-                if sum % 1 != 0:
+                sum1 = (sum - b) / -a[k]
+                sum2 = 0
+                if self.mod:
+                    sum1 = sum1 % self.n
+                    sum2 = (sum - b) % self.n
+                    sum2 = sum2 / -a[k]
+                if sum1 != int(sum1) and sum2 != int(sum2):
                     valid = False
-                sum = int(sum)
+                sum = int(sum1)
+
                 for i in range(len(values)):
                     if out[i] == sum % self.n or out[i] == sum:
                         valid = False
                 if self.mod:
                     out[k] = sum % self.n
                 else:
-                    if 1 < sum <= self.n:
+                    if sum <= self.n and sum > 1:
                         out[k] = sum
                         for i in range(self.k):
                             out[i] = out[i] - 1
