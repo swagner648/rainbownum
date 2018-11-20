@@ -110,7 +110,8 @@ class RainbowSim:
             while temp is not None and (i < quantity or quantity < 0):
                 if i == 0:
                     print(temp, end='')
-                print(',', temp, end='')
+                else:
+                    print(',', temp, end='')
                 temp = temp.next
                 i += 1
         print()
