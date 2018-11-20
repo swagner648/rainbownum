@@ -52,3 +52,16 @@ class RbSumsEq(RainbowSim):
             values[loop] = values[loop] + 1
             for lp in range(loop + 1, k):
                 values[lp] = values[lp-1] + 1
+
+    def check_sums(self):
+        for n in range(self.n):
+            sum = self.sets[n].head.next
+            while sum is not None:
+                total = 0
+                for k in range(self.k):
+                    total += self.a[k] * sum.data[k]
+                if self.mod:
+                    total = total % self.n
+                if total != self.b:
+                    print(sum)
+                sum = sum.next
