@@ -4,11 +4,11 @@ from rainbownums import *
 a = [1, 1, -3] # coefficients a_i
 b = 0 # value for b (default 0 for sums and 1 for products))
 mod = True # whether calculating for [n] or Zn (default False)
-for n in range(4, 20):
+for n in range(4, 18):
     # set up solver
     eq = RbSumsEq(n, a, b, mod)
 
-    # time limit for solving
+    # time limit for solving (default is 12 hours)
     eq.set_time_limit(1)
 
     # stops checking larger n when time limit is exceeded
@@ -23,7 +23,7 @@ for n in range(4, 20):
 
 
 n = 1
-a = [1, 1, -3]
+a = [1, 1, -2]
 b = 0
 mod = True
 while True:

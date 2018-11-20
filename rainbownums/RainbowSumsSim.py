@@ -5,7 +5,6 @@ class RbSumsEq(RainbowSim):
     def __init__(self, n, a, b=0, mod=False):
         super(RbSumsEq, self).__init__(n, a, b, mod)
         self.sums = self.sets
-
         self.generate_sums()
 
     def generate_sums(self):
@@ -40,23 +39,16 @@ class RbSumsEq(RainbowSim):
                     sum2 = sum2 / -a[k]
                 if sum1 != int(sum1) and sum2 != int(sum2):
                     valid = False
-                sum = int(sum1)
-
-                for i in range(len(values)):
-                    if out[i] == sum % self.n or out[i] == sum:
-                        valid = False
-                if self.mod:
-                    out[k] = sum % self.n
+                if sum1 == int(sum1):
+                    out[k] = int(sum1)
+                elif sum2 == int(sum2):
+                    out[k] = int(sum2)
                 else:
-                    if sum <= self.n and sum > 1:
-                        out[k] = sum
-                        for i in range(self.k):
-                            out[i] = out[i] - 1
-                    else:
-                        valid = False
-                if valid:
-                    for i in range(self.k):
-                        sums[out[i]].add_set(out)
+                    valid = False
+                valid = self.sum_leq_n(out, valid)
+                valid = self.is_distinct(out, valid)
+                out = self.decrement_if_not_mod(out, valid)
+                self.add_set(out, valid)
             values[loop] = values[loop] + 1
             for lp in range(loop + 1, k):
                 values[lp] = values[lp-1] + 1

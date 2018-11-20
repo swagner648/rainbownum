@@ -38,26 +38,15 @@ class RbProductsEq(RainbowSim):
                     product = product * a[i] * values[i]
                     out[i] = values[i]
                 valid = True
-                # TODO Determine if modulo bug exists here aswell
+                # TODO Determine if modulo bug exists here as well
                 product = product/(b * a[k])
                 if product != int(product):
                     valid = False
-                product = int(product)
-                for i in range(len(values)):
-                    if out[i] == product % self.n or out[i] == product:
-                        valid = False
-                if self.mod:
-                    out[k] = product % self.n
-                else:
-                    if product <= self.n:
-                        out[k] = product
-                        for i in range(self.k):
-                            out[i] = out[i] - 1
-                    else:
-                        valid = False
-                if valid:
-                    for i in range(self.k):
-                        products[out[i]].add_set(out)
+                out[k] = int(product)
+                valid = self.sum_leq_n(out, valid)
+                valid = self.is_distinct(out, valid)
+                out = self.decrement_if_not_mod(out, valid)
+                self.add_set(out, valid)
             values[loop] = values[loop] + 1
             for lp in range(loop + 1, k):
                 values[lp] = values[lp-1] + 1

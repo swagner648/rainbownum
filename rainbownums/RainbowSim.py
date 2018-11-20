@@ -116,7 +116,7 @@ class RainbowSim:
         print()
 
     def print_sets(self, number=-1):
-        print('Sums Generated:', end='')
+        print('Sets Generated:', end='')
         for n in range(self.n):
             if number >= 0 and self.mod:
                 n = number
@@ -124,13 +124,13 @@ class RainbowSim:
                 n = number-1
             if self.mod:
                 temp = self.sets[n].head.next
-                print('\n', n, ':', temp, end='')
+                print('\n', n, ':', end='')
                 while temp is not None:
                     print(',', temp, end='')
                     temp = temp.next
             else:
                 temp = self.sets[n].head.next
-                print('\n', n+1, ':', temp, end='')
+                print('\n', n+1, ':', end='')
                 while temp is not None:
                     print(',', [i + 1 for i in temp.data], end='')
                     temp = temp.next
@@ -143,3 +143,44 @@ class RainbowSim:
 
     def time_limit_reached(self):
         return self.start < 0
+
+    def is_distinct(self, out, valid):
+        if not valid:
+            return False
+        for i in out[:-1]:
+            if i == out[self.k-1]:
+                return False
+        return True
+
+    def sum_leq_n(self, out, valid):
+        if not valid:
+            return False
+        if not self.mod and out[self.k-1] > self.n:
+            return False
+        return True
+
+    def decrement_if_not_mod(self, out, valid):
+        if not valid or self.mod:
+            return out
+        for i in range(self.k):
+            out[i] = out[i] - 1
+        return out
+
+    def add_set(self, out, valid):
+        if not valid:
+            return
+        for i in out:
+            self.sets[i].add_set(out)
+
+    def check_sums(self):
+        for n in range(self.n):
+            sum = self.sets[n].head.next
+            while sum is not None:
+                total = 0
+                for k in range(self.k):
+                    total += self.a[k] * sum.data[k]
+                if self.mod:
+                    total = total % self.n
+                if total != self.b:
+                    print(sum)
+                sum = sum.next
