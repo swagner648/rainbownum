@@ -31,6 +31,9 @@ class Coloring:
         self.data = coloring
         self.next = next
 
+    def __repr__(self):
+        return str(self.data)
+
 
 class ColoringLinkedList:
     def __init__(self):
@@ -59,10 +62,12 @@ class ColoringLinkedList:
         self.maxColors = colors
 
 
-def recur_print(node):
+def recur_print(node, number=0, current=0):
+    if number != 0 and current == number:
+        return ''
     try:
         if node.next is not None:
-            return str(node.data) + ", " + recur_print(node.next)
+            return str(node.data) + ", " + recur_print(node.next, number, current+1)
         return str(node.data)
     except RecursionError:
         print("Not all colorings could be printed.")

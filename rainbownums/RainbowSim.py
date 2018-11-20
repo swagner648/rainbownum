@@ -4,7 +4,7 @@ import time
 
 
 class RainbowSim:
-    def __init__(self, n, a, b):
+    def __init__(self, n, a, b, mod):
         if type(n) is not int:
             raise TypeError("Scalar n must be an integer greater than or equal to 1")
         if n < 1:
@@ -22,6 +22,10 @@ class RainbowSim:
         if type(b) is not int:
             raise TypeError("Scalar b must be an integer.")
         self.b = b
+
+        if type(mod) is not bool:
+            raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
+        self.mod = mod
 
         self.sets = [0 for _ in range(n)]
         for i in range(n):
@@ -99,13 +103,25 @@ class RainbowSim:
                 return
         print("VALID: Coloring", coloring, "for n = ", self.n, "works!")
 
-    def print_extreme_colorings(self):
+    def print_extreme_colorings(self, quantity=-1):
         if self.start != -1:
-            print('Extreme Colorings:\n', self.colorings)
+            temp = self.colorings.head
+            i = 0
+            while temp is not None and (i < quantity or quantity < 0):
+                if i == 0:
+                    print(temp, end='')
+                print(',', temp, end='')
+                temp = temp.next
+                i += 1
+        print()
 
-    def print_sets(self):
+    def print_sets(self, number=-1):
         print('Sums Generated:', end='')
         for n in range(self.n):
+            if number >= 0 and self.mod:
+                n = number
+            if number >= 0 and not self.mod:
+                n = number-1
             if self.mod:
                 temp = self.sets[n].head.next
                 print('\n', n, ':', temp, end='')
@@ -113,15 +129,17 @@ class RainbowSim:
                     print(',', temp, end='')
                     temp = temp.next
             else:
-                temp = [i+1 for i in self.sets[n].head.next]
+                temp = self.sets[n].head.next
                 print('\n', n+1, ':', temp, end='')
                 while temp is not None:
-                    print(',', temp, end='')
-                    temp = [i + 1 for i in temp.next]
+                    print(',', [i + 1 for i in temp.data], end='')
+                    temp = temp.next
+            if number >= 0:
+                return
         print()
 
     def set_time_limit(self, t):
         self.timeLimit = t
 
     def time_limit_reached(self):
-        return self.start > 0
+        return self.start < 0

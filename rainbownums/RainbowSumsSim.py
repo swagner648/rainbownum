@@ -2,13 +2,9 @@ from .RainbowSim import RainbowSim
 
 
 class RbSumsEq(RainbowSim):
-    def __init__(self, n, a, b, mod):
-        super(RbSumsEq, self).__init__(n, a, b)
+    def __init__(self, n, a, b=0, mod=False):
+        super(RbSumsEq, self).__init__(n, a, b, mod)
         self.sums = self.sets
-
-        if type(mod) is not bool:
-            raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
-        self.mod = mod
 
         self.generate_sums()
 

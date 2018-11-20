@@ -3,18 +3,14 @@ import warnings
 
 
 class RbProductsEq(RainbowSim):
-    def __init__(self, n, a, b, mod):
+    def __init__(self, n, a, b=1, mod=False):
         warnings.warn('Potential bug in code, currently under further inspection.')
 
-        super(RbProductsEq, self).__init__(n, a, b)
+        super(RbProductsEq, self).__init__(n, a, b, mod)
         self.products = self.sets
 
         if self.b is 0:
             raise ValueError("Scalar b must be a nonzero integer.")
-
-        if type(mod) is not bool:
-            raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
-        self.mod = mod
 
         self.generate_products()
 
