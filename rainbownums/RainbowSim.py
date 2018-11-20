@@ -125,16 +125,20 @@ class RainbowSim:
                 n = number-1
             if self.mod:
                 temp = self.sets[n].head.next
-                print('\n', n, ':', end='')
-                while temp is not None:
-                    print(',', temp, end='')
+                print('\n', n, ':', temp, end='')
+                if temp is not None:
                     temp = temp.next
+                    while temp is not None:
+                        print(',', temp, end='')
+                        temp = temp.next
             else:
                 temp = self.sets[n].head.next
-                print('\n', n+1, ':', end='')
-                while temp is not None:
-                    print(',', [i + 1 for i in temp.data], end='')
+                print('\n', n+1, ':', temp, end='')
+                if temp is not None:
                     temp = temp.next
+                    while temp is not None:
+                        print(',', [i + 1 for i in temp.data], end='')
+                        temp = temp.next
             if number >= 0:
                 return
         print()
