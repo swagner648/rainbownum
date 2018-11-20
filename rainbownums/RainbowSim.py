@@ -41,10 +41,11 @@ class RainbowSim:
         self.gen_colorings(coloring, used, 1)
         if self.start == -1:
             print("\naS(" + str(self.k) + ", " + str(self.n) + ") computation exceed time limit.")
-            return
+            return None
         print("\naS(" + str(self.k) + ", " + str(self.n) + ") = ", str(self.colorings.maxColors+1))
         print("Total colorings:", self.colorings.len)
         print("Time:", time.time() - self.start)
+        return 1
 
     def gen_colorings(self, coloring, used, loop):
         if time.time() - self.start > self.timeLimit:
@@ -122,3 +123,5 @@ class RainbowSim:
     def set_time_limit(self, t):
         self.timeLimit = t
 
+    def time_limit_reached(self):
+        return self.start > 0
