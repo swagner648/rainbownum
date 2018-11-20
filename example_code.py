@@ -8,7 +8,7 @@ for n in range(4, 18):
     # set up solver
     eq = RbSumsEq(n, a, b, mod)
 
-    # time limit for solving (default is 12 hours)
+    # time limit for solving (default is 43200 sec (12 hours))
     eq.set_time_limit(1)
 
     # stops checking larger n when time limit is exceeded
