@@ -38,15 +38,15 @@ class RainbowSim:
 
     def run(self):
         self.start = time.time()
-        coloring = ["*" for _ in range(self.n)]
+        coloring = [-1 for _ in range(self.n)]
         coloring[0] = 0
         used = [0 for _ in range(self.n)]
         used[0] = 1
         self.gen_colorings(coloring, used, 1)
         if self.start == -1:
-            print("\naS(" + str(self.k) + ", " + str(self.n) + ") computation exceed time limit.")
+            print("\naS(" + self.get_equation() + ", n = " + str(self.n) + ") computation exceed time limit.")
             return None
-        print("\naS(" + str(self.k) + ", " + str(self.n) + ") = ", str(self.colorings.maxColors+1))
+        print("\naS(" + self.get_equation() + ", n = " + str(self.n) + ") = ", str(self.colorings.maxColors + 1))
         print("Total colorings:", self.colorings.len)
         print("Time:", time.time() - self.start)
         return 1
@@ -58,15 +58,15 @@ class RainbowSim:
         if loop == self.n:
             return
         for i in range(0, self.n):
-            if i != 0 and used[i-1] == 0:
+            if i != 0 and used[i - 1] == 0:
                 return
             used[i] += 1
             coloring[loop] = i
             if self.contains_rainbow_sum(coloring, loop):
                 used[i] -= 1
                 continue
-            self.gen_colorings(coloring, used, loop+1)
-            if loop == self.n-1:
+            self.gen_colorings(coloring, used, loop + 1)
+            if loop == self.n - 1:
                 colors = 0;
                 for j in used:
                     if j == 0:
@@ -116,31 +116,38 @@ class RainbowSim:
                 i += 1
         print()
 
-    def print_sets(self, number=-1):
+    def print_sets(self, nums=-1):
         print('Sets Generated:', end='')
-        for n in range(self.n):
-            if number >= 0 and self.mod:
-                n = number
-            if number >= 0 and not self.mod:
-                n = number-1
+        if nums is -1 and self.mod:
+            nums = list(range(self.n))
+        elif nums is -1 and not self.mod:
+            nums = list(range(1, self.n+1))
+        for n in nums:
+            # if n >= 0 and self.mod:
+            #     n = n
+            # if n >= 0 and not self.mod:
+            #     n = n - 1
             if self.mod:
                 temp = self.sets[n].head.next
-                print('\n', n, ':', temp, end='')
-                if temp is not None:
-                    temp = temp.next
-                    while temp is not None:
-                        print(',', temp, end='')
-                        temp = temp.next
             else:
-                temp = self.sets[n].head.next
-                print('\n', n+1, ':', temp, end='')
+                temp = self.sets[n-1].head.next
+            if self.mod:
+                print('\n', n, ':', temp, end='')
+            else:
                 if temp is not None:
-                    temp = temp.next
-                    while temp is not None:
+                    print('\n', n, ':', [i + 1 for i in temp.data], end='')
+                else:
+                    print('\n', n, ':', temp, end='')
+            if temp is not None:
+                temp = temp.next
+                while temp is not None:
+                    if self.mod:
+                        print(',', temp, end='')
+                    else:
                         print(',', [i + 1 for i in temp.data], end='')
-                        temp = temp.next
-            if number >= 0:
-                return
+                    temp = temp.next
+            # if n >= 0:
+            #     return
         print()
 
     def set_time_limit(self, t):
@@ -149,29 +156,29 @@ class RainbowSim:
     def time_limit_reached(self):
         return self.start < 0
 
-    def is_distinct(self, out, valid):
+    def _is_distinct(self, out, valid):
         if not valid:
             return False
         for i in out[:-1]:
-            if i == out[self.k-1]:
+            if i == out[self.k - 1]:
                 return False
         return True
 
-    def sum_leq_n(self, out, valid):
+    def _set_leq_n(self, out, valid):
         if not valid:
             return False
-        if not self.mod and out[self.k-1] > self.n:
+        if not self.mod and out[self.k - 1] > self.n:
             return False
         return True
 
-    def decrement_if_not_mod(self, out, valid):
+    def _decrement_if_not_mod(self, out, valid):
         if not valid or self.mod:
             return out
         for i in range(self.k):
             out[i] = out[i] - 1
         return out
 
-    def add_set(self, out, valid):
+    def _add_set(self, out, valid):
         if not valid:
             return
         for i in out:

@@ -7,6 +7,13 @@ class RbSumsEq(RainbowSim):
         self.sums = self.sets
         self.generate_sums()
 
+    def get_equation(self):
+        eq = ""
+        for i in self.a:
+            eq += str(i) + "x + "
+        eq = eq[:-2] + "= " + str(self.b)
+        return eq
+
     def generate_sums(self):
         if self.mod:
             values = list(range(self.k - 1))
@@ -45,10 +52,10 @@ class RbSumsEq(RainbowSim):
                     out[k] = int(sum2)
                 else:
                     valid = False
-                valid = self.sum_leq_n(out, valid)
-                valid = self.is_distinct(out, valid)
-                out = self.decrement_if_not_mod(out, valid)
-                self.add_set(out, valid)
+                valid = self._set_leq_n(out, valid)
+                valid = self._is_distinct(out, valid)
+                out = self._decrement_if_not_mod(out, valid)
+                self._add_set(out, valid)
             values[loop] = values[loop] + 1
             for lp in range(loop + 1, k):
                 values[lp] = values[lp-1] + 1
