@@ -1,4 +1,4 @@
-from rainbownums import *
+from rainbownum import *
 
 # a_1(x_1) + a_2(x_2) + ... + a_i(x_i) = b
 a = [1, 1, 1]  # coefficients a_i
