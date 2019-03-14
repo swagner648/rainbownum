@@ -3,7 +3,7 @@ import numpy as np
 
 
 class RbCartesianSumsEq(RainbowSim):
-    def __init__(self, m, n, a, b):
+    def __init__(self, m, n, a, b=[0, 0]):
         super(RbCartesianSumsEq, self).__init__(m * n, a, Point(b[0], b[1]), False)
         self.M = m  # rows
         self.N = n  # columns

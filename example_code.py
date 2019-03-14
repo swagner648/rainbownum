@@ -45,7 +45,7 @@ eq.print_sets([0, 1, 2])
 
 # Rainbow Cartesian Sums
 a = [1, 1, -1]
-b = [0, 0]
+b = [0, 0]  # only function for b = [0, 0] for the time being
 for m in range(3, 5):
     for n in range(3, 5):
         eq = RbCartesianSumsEq(m, n, a, b)

@@ -15,8 +15,7 @@ class RainbowSim:
         self.a = a
         self.k = len(a)
 
-        # if type(b) is not int:
-        #     raise Warning("Scalar b should be an integer unless using RbCartesianSumsEq.")
+        # INSERT WARNINGS FOR B TYPE
         self.b = b
 
         if type(mod) is not bool:
