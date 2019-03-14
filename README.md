@@ -5,6 +5,6 @@ An anti-Schur number, denoted aS([n], k, [a], b), is defined as the smallest num
 
 Install notes:
 
-https://test.pypi.org/project/rainbownums/#description
+pip install rainbownums
 
-pip install -i https://test.pypi.org/simple/ rainbownums
+pip install --upgrade rainbownums
