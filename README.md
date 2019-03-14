@@ -7,6 +7,6 @@ https://pypi.org/project/rainbownums/
 
 Install notes:
 
-pip install rainbownums
+pip install rainbownum
 
-pip install --upgrade rainbownums
+pip install --upgrade rainbownum
