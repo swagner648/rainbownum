@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rainbownums",
-    version="2.0",
+    version="2.01",
     author="Simon Wagner",
     author_email="swagner648@gmail.com",
     description="Python package to solve anti-Schur equations",
