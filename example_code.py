@@ -22,17 +22,17 @@ for n in range(15, 16):
     eq.print_sets()
 
 # Another format for computation
-n = 2
-a = [1, 1, -2]
-b = 0
-mod = True
+n = 15
+a = [1, 1, 1]
+b = 27
+mod = False
 while True:
     eq = RbSumsEq(n, a, b, mod)
-    eq.set_time_limit(1)
+    eq.set_time_limit(20)
     eq.run()
     if eq.time_limit_reached():
         break
-    eq.print_extreme_colorings(1)
+    eq.print_extreme_colorings()
     eq.print_sets()
     n += 1
 
@@ -59,4 +59,4 @@ for m in range(3, 5):
         eq.print_extreme_matrices()
 
         # prints sets in matrix form
-        eq.print_matrices()
+        eq.print_set_matrices()

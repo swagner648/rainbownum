@@ -76,7 +76,7 @@ class RbCartesianSumsEq(RainbowSim):
                 temp = temp.next
         print()
 
-    def print_matrices(self):
+    def print_set_matrices(self):
         sum = self.sums[self.n].head.next
         while sum.next is not None:
             matrix = [["*" for _ in range(self.N)] for _ in range(self.M)]
