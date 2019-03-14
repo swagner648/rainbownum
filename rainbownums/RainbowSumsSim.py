@@ -5,7 +5,7 @@ class RbSumsEq(RainbowSim):
     def __init__(self, n, a, b=0, mod=False):
         super(RbSumsEq, self).__init__(n, a, b, mod)
         self.sums = self.sets
-        self.generate_sums()
+        self.__generate_sums()
 
     def get_equation(self):
         eq = ""
@@ -14,14 +14,14 @@ class RbSumsEq(RainbowSim):
         eq = eq[:-2] + "= " + str(self.b)
         return eq
 
-    def generate_sums(self):
+    def __generate_sums(self):
         if self.mod:
             values = list(range(self.k - 1))
         else:
             values = list(range(1, self.k))
-        self.recur_gen_sums(self.sums, self.a, self.b, values, 0)
+        self.__recur_gen_sums(self.sums, self.a, self.b, values, 0)
 
-    def recur_gen_sums(self, sums, a, b, values, loop):
+    def __recur_gen_sums(self, sums, a, b, values, loop):
         k = self.k - 1
         if loop == k:
             return
@@ -30,7 +30,7 @@ class RbSumsEq(RainbowSim):
         else:
             stop_case = self.n - k + loop + 1
         while values[loop] <= stop_case:
-            self.recur_gen_sums(sums, a, b, values, loop + 1)
+            self.__recur_gen_sums(sums, a, b, values, loop + 1)
             if loop == k - 1:
                 sum = 0
                 out = [0 for _ in range(self.k)]
@@ -58,17 +58,4 @@ class RbSumsEq(RainbowSim):
                 self._add_set(out, valid)
             values[loop] = values[loop] + 1
             for lp in range(loop + 1, k):
-                values[lp] = values[lp-1] + 1
-
-    def check_sums(self):
-        for n in range(self.n):
-            sum = self.sets[n].head.next
-            while sum is not None:
-                total = 0
-                for k in range(self.k):
-                    total += self.a[k] * sum.data[k]
-                if self.mod:
-                    total = total % self.n
-                if total != self.b:
-                    print(sum)
-                sum = sum.next
+                values[lp] = values[lp - 1] + 1

@@ -5,30 +5,26 @@ import time
 
 class RainbowSim:
     def __init__(self, n, a, b, mod):
-        if type(n) is not int:
+        if type(n) is not int or n < 1:
             raise TypeError("Scalar n must be an integer greater than or equal to 1")
-        if n < 1:
-            raise ValueError("Scalar n must be greater than or equal to 1.")
         self.n = n
 
         for i in a:
-            if type(i) is not int:
+            if type(i) is not int or i is 0:
                 raise TypeError("Vector a[] can only contain nonzero integers")
-            if i is 0:
-                raise ValueError("Vector a[] cannot contain 0-value elements.")
         self.a = a
         self.k = len(a)
 
-        if type(b) is not int:
-            raise TypeError("Scalar b must be an integer.")
+        # if type(b) is not int:
+        #     raise Warning("Scalar b should be an integer unless using RbCartesianSumsEq.")
         self.b = b
 
         if type(mod) is not bool:
             raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
         self.mod = mod
 
-        self.sets = [0 for _ in range(n)]
-        for i in range(n):
+        self.sets = [0 for _ in range(n + 1)]
+        for i in range(n + 1):
             self.sets[i] = SetLinkedList()
 
         self.colorings = ColoringLinkedList()
@@ -42,7 +38,7 @@ class RainbowSim:
         coloring[0] = 0
         used = [0 for _ in range(self.n)]
         used[0] = 1
-        self.gen_colorings(coloring, used, 1)
+        self._gen_colorings(coloring, used, 1)
         if self.start == -1:
             print("\naS(" + self.get_equation() + ", n = " + str(self.n) + ") computation exceed time limit.")
             return None
@@ -51,7 +47,7 @@ class RainbowSim:
         print("Time:", time.time() - self.start)
         return 1
 
-    def gen_colorings(self, coloring, used, loop):
+    def _gen_colorings(self, coloring, used, loop):
         if time.time() - self.start > self.timeLimit:
             self.start = -1
             return
@@ -65,7 +61,7 @@ class RainbowSim:
             if self.contains_rainbow_sum(coloring, loop):
                 used[i] -= 1
                 continue
-            self.gen_colorings(coloring, used, loop + 1)
+            self._gen_colorings(coloring, used, loop + 1)
             if loop == self.n - 1:
                 colors = 0;
                 for j in used:
@@ -121,16 +117,12 @@ class RainbowSim:
         if nums is -1 and self.mod:
             nums = list(range(self.n))
         elif nums is -1 and not self.mod:
-            nums = list(range(1, self.n+1))
+            nums = list(range(1, self.n + 1))
         for n in nums:
-            # if n >= 0 and self.mod:
-            #     n = n
-            # if n >= 0 and not self.mod:
-            #     n = n - 1
             if self.mod:
                 temp = self.sets[n].head.next
             else:
-                temp = self.sets[n-1].head.next
+                temp = self.sets[n - 1].head.next
             if self.mod:
                 print('\n', n, ':', temp, end='')
             else:
@@ -146,8 +138,6 @@ class RainbowSim:
                     else:
                         print(',', [i + 1 for i in temp.data], end='')
                     temp = temp.next
-            # if n >= 0:
-            #     return
         print()
 
     def set_time_limit(self, t):
@@ -167,7 +157,7 @@ class RainbowSim:
     def _set_leq_n(self, out, valid):
         if not valid:
             return False
-        if not self.mod and out[self.k - 1] > self.n:
+        if not self.mod and 1 > out[self.k - 1] or out[self.k - 1] > self.n:
             return False
         return True
 
@@ -183,3 +173,4 @@ class RainbowSim:
             return
         for i in out:
             self.sets[i].add_set(out)
+        self.sets[self.n].add_set(out)

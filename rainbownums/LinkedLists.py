@@ -67,7 +67,7 @@ def recur_print(node, number=0, current=0):
         return ''
     try:
         if node.next is not None:
-            return str(node.data) + ", " + recur_print(node.next, number, current+1)
+            return str(node.data) + ", " + recur_print(node.next, number, current + 1)
         return str(node.data)
     except RecursionError:
         print("Not everything could be printed.")
