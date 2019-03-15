@@ -15,7 +15,7 @@ class RainbowSim:
         self.a = a
         self.k = len(a)
 
-        # INSERT WARNINGS FOR B TYPE
+        # TODO INSERT WARNINGS FOR b TYPE
         self.b = b
 
         if type(mod) is not bool:

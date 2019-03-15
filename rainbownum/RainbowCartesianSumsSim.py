@@ -54,19 +54,6 @@ class RbCartesianSumsEq(RainbowSim):
     def __point_to_i(self, p):
         return self.N * (p.x - 1) + p.y
 
-    def print_extreme_colorings(self, quantity=-1):
-        if self.start != -1:
-            temp = self.colorings.head
-            i = 0
-            while temp is not None and (i < quantity or quantity < 0):
-                if i == 0:
-                    print(temp, end='')
-                else:
-                    print(',', temp, end='')
-                temp = temp.next
-                i += 1
-        print()
-
     def print_extreme_matrices(self, quantity=-1):
         if self.start != -1:
             temp = self.colorings.head
@@ -103,7 +90,7 @@ class RbCartesianSumsEq(RainbowSim):
             else:
                 if temp is not None:
                     print('\n', n, ':',
-                          '[%s]' % ', '.join(map(str, [self.__translate(i) + Point(1, 1) for i in temp.data])), end='')
+                          '[%s]' % ', '.join(map(str, [self.__translate(i + 1) for i in temp.data])), end='')
                 else:
                     print('\n', n, ':', temp, end='')
             if temp is not None:
@@ -112,7 +99,7 @@ class RbCartesianSumsEq(RainbowSim):
                     if self.mod:
                         print(',', temp, end='')
                     else:
-                        print(',', '[%s]' % ', '.join(map(str, [self.__translate(i) + Point(1, 1) for i in temp.data])),
+                        print(',', '[%s]' % ', '.join(map(str, [self.__translate(i + 1) for i in temp.data])),
                               end='')
                     temp = temp.next
         print("\n")

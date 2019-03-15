@@ -4,7 +4,7 @@ import warnings
 
 class RbProductsEq(RainbowSim):
     def __init__(self, n, a, b=1, mod=False):
-        warnings.warn('Potential bug in code, currently under further inspection.')
+        warnings.warn('This section is currently under construction.')
 
         super(RbProductsEq, self).__init__(n, a, b, mod)
         self.products = self.sets
