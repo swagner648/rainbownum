@@ -4,6 +4,8 @@ from .RainbowSim import RainbowSim
 Rainbow Equation of the form:
 a_1*x_1 + a_2*x_2 + ... + a_i*x_i = b
 """
+
+
 class RbSumsEq(RainbowSim):
     def __init__(self, n, a, b=0, mod=False):
         super(RbSumsEq, self).__init__(n, a, b, mod)

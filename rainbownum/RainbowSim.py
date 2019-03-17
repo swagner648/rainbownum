@@ -1,6 +1,7 @@
 from .LinkedLists import SetLinkedList
 from .LinkedLists import ColoringLinkedList
 import time
+import multiprocessing as mp
 
 
 class RainbowSim:
@@ -31,13 +32,36 @@ class RainbowSim:
         self.timeLimit = 43200
         self.start = 0
 
+        self.queue = mp.Queue()
+        if mp.cpu_count() == 1:
+            self.splits = 1
+        elif mp.cpu_count() == 2:
+            self.splits = 2
+        elif mp.cpu_count() <= 8:
+            self.splits = 3
+        elif mp.cpu_count() <= 16:
+            self.splits = 4
+        else:
+            self.splits = 5
+
     def run(self):
         self.start = time.time()
         coloring = [-1 for _ in range(self.n)]
         coloring[0] = 0
         used = [0 for _ in range(self.n)]
         used[0] = 1
-        self._gen_colorings(coloring, used, 1)
+
+        self._gen_colorings(coloring, used, 1, self.colorings, self.queue, self.splits)
+        for p in mp.active_children():
+            p.join()
+        temp_colorings = []
+        while not self.queue.empty():
+            temp_colorings.append(self.queue.get())
+        temp_colorings.sort()
+        for data in temp_colorings:
+            self.colorings.add_coloring(data[0], data[1])
+        self.queue.close()
+
         if self.start == -1:
             print("\naS(" + self.get_equation() + ", n = " + str(self.n) + ") computation exceed time limit.")
             return None
@@ -46,7 +70,7 @@ class RainbowSim:
         print("Time:", time.time() - self.start)
         return 1
 
-    def _gen_colorings(self, coloring, used, loop):
+    def _gen_colorings(self, coloring, used, loop, colorings, queue, splits):
         if time.time() - self.start > self.timeLimit:
             self.start = -1
             return
@@ -54,23 +78,36 @@ class RainbowSim:
             return
         for i in range(0, self.n):
             if i != 0 and used[i - 1] == 0:
+                if loop == splits:
+                    temp = colorings.head
+                    i = 1
+                    while temp is not None:
+                        i += 1
+                        queue.put([temp.data, colorings.maxColors])
+                        temp = temp.next
                 return
             used[i] += 1
             coloring[loop] = i
-            if self.contains_rainbow_sum(coloring, loop):
+            if self._contains_rainbow_sum(coloring, loop):
                 used[i] -= 1
                 continue
-            self._gen_colorings(coloring, used, loop + 1)
+            if loop == splits - 1:
+                p = mp.Process(target=self._gen_colorings,
+                               args=(coloring.copy(), used.copy(), loop + 1, ColoringLinkedList(), queue, splits))
+                p.start()
+            else:
+                self._gen_colorings(coloring, used, loop + 1, colorings, queue, splits)
             if loop == self.n - 1:
                 colors = 0;
                 for j in used:
                     if j == 0:
                         break
                     colors += 1
-                self.colorings.add_coloring(coloring, colors)
+                colors = max(coloring) + 1
+                colorings.add_coloring(coloring, colors)
             used[i] -= 1
 
-    def contains_rainbow_sum(self, coloring, new):
+    def _contains_rainbow_sum(self, coloring, new):
         temp = self.sets[new].head.next
         while temp is not None:
             skip = False
@@ -93,10 +130,10 @@ class RainbowSim:
 
     def check_coloring(self, coloring):
         for i in range(1, self.n):
-            if self.contains_rainbow_sum(coloring, i) is True:
+            if self._contains_rainbow_sum(coloring, i) is True:
                 print("INVALID: Coloring", coloring, "for n =", self.n, "contains rainbow sums :(")
                 return
-        print("VALID: Coloring", coloring, "for n = ", self.n, "works!")
+        print("VALID: Coloring", coloring, "for n =", self.n, "works!")
 
     def print_extreme_colorings(self, quantity=-1):
         if self.start != -1:

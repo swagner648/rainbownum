@@ -14,7 +14,7 @@ class RbCartesianSumsEq(RainbowSim):
         eq = ""
         for i in self.a:
             eq += str(i) + "x + "
-        eq = eq[:-2] + "= " + str(self.b) + ", M = " + str(self.M) + ", N =" + str(self.N)
+        eq = eq[:-2] + "= " + str(self.b) + ", M = " + str(self.M) + ", N = " + str(self.N)
         return eq
 
     def __generate_sums(self):
@@ -57,21 +57,26 @@ class RbCartesianSumsEq(RainbowSim):
     def print_extreme_matrices(self, quantity=-1):
         if self.start != -1:
             temp = self.colorings.head
-            while temp.next is not None:
-                matrix = [temp.data[i * self.N:(i + 1) * self.N] for i in range((len(temp.data) + self.N - 1) // self.N )]
+            i = 0
+            while temp is not None and (i < quantity or quantity < 0):
+                matrix = [temp.data[i * self.N:(i + 1) * self.N] for i in
+                          range((len(temp.data) + self.N - 1) // self.N)]
                 print(np.matrix(matrix), "\n")
                 temp = temp.next
+                i += 1
         print()
 
-    def print_set_matrices(self):
+    def print_set_matrices(self, quantity=-1):
         sum = self.sums[self.n].head.next
-        while sum.next is not None:
+        i = 0
+        while sum.next is not None and (i < quantity or quantity < 0):
             matrix = [["*" for _ in range(self.N)] for _ in range(self.M)]
             for i in sum.data:
                 p = self.__translate(i + 1)
                 matrix[p.x - 1][p.y - 1] = "0"
             print(np.matrix(matrix), "\n")
             sum = sum.next
+            i += 1
         return
 
     def print_sets(self, nums=-1):
