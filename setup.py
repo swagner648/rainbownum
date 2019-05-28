@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rainbownum",
-    version="5.0",
+    version="6.0.5",
     author="Simon Wagner",
     author_email="swagner648@gmail.com",
     description="Python package to solve anti-Schur equations",
@@ -17,3 +17,7 @@ setuptools.setup(
         'numpy'
     ]
 )
+
+# 1. Change version number
+# 2. Run 'python3 setup.py sdist bdist_wheel'
+# 3. Run 'python3 -m twine upload dist/*'

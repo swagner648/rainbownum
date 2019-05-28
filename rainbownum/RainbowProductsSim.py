@@ -1,52 +1,65 @@
-from .RainbowSim import RainbowSim
-import warnings
+from .RainbowSim import _RainbowSim
+
+"""
+Rainbow Equation of the form:
+
+a_1*x_1 * a_2*x_2 * ... * a_i*x_i = b
+
+where x is an element of the positive integers.
+"""
 
 
-class RbProductsEq(RainbowSim):
-    def __init__(self, n, a, b=1, mod=False):
-        warnings.warn('This section is currently under construction.')
+class RbProductsEq(_RainbowSim):
+    def __init__(self, n, a, b=0, mod=False):
+        for i in a:
+            if type(i) is not int:
+                raise TypeError("Vector a[] can only contain integers")
+        self.a = a
 
-        super(RbProductsEq, self).__init__(n, a, b, mod)
-        self.products = self.sets
+        if type(b) is not int:
+            raise TypeError("Scalar b can only be an integer.")
+        self.b = b
 
-        if self.b is 0:
-            raise ValueError("Scalar b must be a nonzero integer.")
+        if type(mod) is not bool:
+            raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
+        self.mod = mod
 
-        self.generate_products()
+        super(RbProductsEq, self).__init__(n, len(a), RbProductsEq, (n, a, b, mod))
 
-    def generate_products(self):
+    def _invert(self, i):
+        """
+        Invert object from index.
+
+        :param i: Index to be inverted
+        :return: Object from index
+        """
         if self.mod:
-            values = list(range(self.k - 1))
-        else:
-            values = list(range(1, self.k))
-        self.recur_gen_products(self.products, self.a, self.b, values, 0)
+            return i
+        return i + 1
 
-    def recur_gen_products(self, products, a, b, values, loop):
-        k = self.k - 1
-        if loop == k:
-            return
+    def _is_valid_set(self, set):
+        """
+        Determine whether or not a given set is valid (satisfies equation)
+
+        :param set: Set to be tested
+        :return: Boolean for whether or not set is valid
+        """
+        product = 1
+        for a, num in zip(self.a, set):
+            product *= a * num
         if self.mod:
-            stop_case = self.n - k + loop
-        else:
-            stop_case = self.n - k + loop + 1
-        while values[loop] <= stop_case:
-            self.recur_gen_products(products, a, b, values, loop + 1)
-            if loop == k - 1:
-                product = 1
-                out = [0 for _ in range(self.k)]
-                for i in range(len(values)):
-                    product = product * a[i] * values[i]
-                    out[i] = values[i]
-                valid = True
-                # TODO Determine if modulo bug exists here as well
-                product = product/(b * a[k])
-                if product != int(product):
-                    valid = False
-                out[k] = int(product)
-                valid = self.sum_leq_n(out, valid)
-                valid = self.is_distinct(out, valid)
-                out = self.decrement_if_not_mod(out, valid)
-                self.add_set(out, valid)
-            values[loop] = values[loop] + 1
-            for lp in range(loop + 1, k):
-                values[lp] = values[lp-1] + 1
+            return product % self.n == self.b % self.n
+        return product == self.b
+
+    def equation(self):
+        """
+        Get a string-representation of the current equation.
+
+        :return:
+        string: Algebraic form of equation with a-coefficients and b-value
+        """
+        eq = ""
+        for i in self.a:
+            eq += str(i) + "x * "
+        eq = eq[:-2] + "= " + str(self.b) + ", mod = " + str(self.mod)
+        return eq

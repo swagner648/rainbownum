@@ -42,6 +42,8 @@ class ColoringLinkedList:
         return recur_print(self.head)
 
     def add_coloring(self, coloring, colors):
+        if self.tail.data == coloring:
+            return
         if colors < self.maxColors:
             return
         if colors > self.maxColors:

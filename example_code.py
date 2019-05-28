@@ -1,12 +1,12 @@
 from rainbownum import *
 
 # a_1(x_1) + a_2(x_2) + ... + a_i(x_i) = b
-a = [1, 1, -1]  # coefficients a_i
-b = 0  # value for b (default 0 for sums and 1 for products))
+a = [1, 1, 1]  # coefficients a_i
+b = 8  # value for b (default 0 for sums and 1 for products))
 mod = True  # whether calculating for [n] or Zn (default False)
-for n in range(3, 6):
+for n in range(5, 15):
     # set up solver
-    eq = RbSumsEq(n, a, b, mod)
+    eq = RbProductsEq(n, a, b, mod)
 
     # time limit (sec) for solving (default is 43200 sec (12 hours))
     eq.set_time_limit(600)
@@ -46,9 +46,10 @@ eq.print_sets([0, 1, 2])
 # Rainbow Cartesian Sums
 a = [1, 1, -1]
 b = [0, 0]  # only function for b = [0, 0] for the time being
-for m in range(6, 7):
-    for n in range(6, 7):
-        eq = RbCartesianSumsEq(m, n, a, b)
+mod = True
+for m in range(3, 5):
+    for n in range(3, 5):
+        eq = RbCartesianSumsEq(m, n, a, b, mod)
         if eq.run() is None:
             break
         eq.print_extreme_colorings()
@@ -59,3 +60,15 @@ for m in range(6, 7):
 
         # prints sets in matrix form
         eq.print_set_matrices()
+
+# If using a Windows machine all code must be wrapped like so
+if __name__ == "__main__":
+    """
+    a = [1, 1, -1]
+    b = [0, 0]
+    eq = RbCartesianSumsEq(3, 5, a, b)
+    eq.run()
+    eq.print_sets()
+    eq.print_extreme_matrices()
+    eq.print_set_matrices()
+    """
