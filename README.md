@@ -1,5 +1,7 @@
 [![Code Grade](https://www.code-inspector.com/project/468/status/svg)](https://www.code-inspector.com/public/project/468/rainbownum/dashboard)
 
+[![Code Score](https://www.code-inspector.com/project/468/score/svg)](https://www.code-inspector.com/public/project/468/rainbownum/dashboard)
+
 # rainbownum
 Program used to generate colorings and the anti-Schur numbers for a given equation.
 
