@@ -11,11 +11,6 @@ where x is an element of the positive integers.
 
 class RbProductsEq(_RainbowSim):
     def __init__(self, n, a, b=0, mod=False):
-        for i in a:
-            if type(i) is not int:
-                raise TypeError("Vector a[] can only contain integers")
-        self.a = a
-
         if type(b) is not int:
             raise TypeError("Scalar b can only be an integer.")
         self.b = b
@@ -24,7 +19,7 @@ class RbProductsEq(_RainbowSim):
             raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
         self.mod = mod
 
-        super(RbProductsEq, self).__init__(n, len(a), RbProductsEq, (n, a, b, mod))
+        super(RbProductsEq, self).__init__(n, a, RbProductsEq, (n, a, b, mod))
 
     def _invert(self, i):
         """

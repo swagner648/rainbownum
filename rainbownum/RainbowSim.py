@@ -12,14 +12,19 @@ def _generate_process(initialize, params, start, time_limit, coloring, used, loo
 
 
 class _RainbowSim:
-    def __init__(self, n, k, initialize, params):
+    def __init__(self, n, a, initialize, params):
         if type(n) is not int or n < 1:
             raise TypeError("Scalar n must be an integer greater than or equal to 1")
         self.n = n
 
-        if type(k) is not int or k < 2:
-            raise TypeError("Scalar k must be an integer greater than or equal to 2")
-        self.k = k
+        try:
+            for i in a:
+                if type(i) is not int:
+                    raise TypeError()
+        except TypeError:
+            raise TypeError("Vector a[] must be a list containing only integers")
+        self.a = a
+        self.k = len(a)
 
         self.initialize = initialize
         self.params = params
@@ -117,26 +122,6 @@ class _RainbowSim:
                     return True
             temp = temp.next
         return False
-
-        #
-        #
-        #     skip = False
-        #     used = [0 for _ in range(self.n)]
-        #     unique = True
-        #     for i in temp.data:
-        #         if i > new:
-        #             skip = True
-        #             break
-        #         used[coloring[i]] += 1
-        #         if used[coloring[i]] > 1:
-        #             unique = False
-        #     if skip:
-        #         temp = temp.next
-        #         continue
-        #     if unique:
-        #         return True
-        #     temp = temp.next
-        # return False
 
     def _add_set(self, set):
         """

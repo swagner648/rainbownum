@@ -20,11 +20,6 @@ class RbCartesianSumsEq(_RainbowSim):
             raise TypeError("Scalar n can only be an integer greater than or equal to 1")
         self.N = n  # columns
 
-        for i in a:
-            if type(i) is not int:
-                raise TypeError("Vector a[] can only contain integers")
-        self.a = a  # coefficients
-
         for i in b:
             if type(i) is not int:
                 raise TypeError("Vector b[] can only contain integers")
@@ -34,7 +29,7 @@ class RbCartesianSumsEq(_RainbowSim):
             raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
         self.mod = mod
 
-        super(RbCartesianSumsEq, self).__init__(m * n, len(a), RbCartesianSumsEq, (m, n, a, b))
+        super(RbCartesianSumsEq, self).__init__(m * n, a, RbCartesianSumsEq, (m, n, a, b))
 
     def _invert(self, i):
         """

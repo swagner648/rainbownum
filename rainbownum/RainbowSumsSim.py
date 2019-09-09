@@ -11,11 +11,6 @@ where x is an element of the positive integers.
 
 class RbSumsEq(_RainbowSim):
     def __init__(self, n, a, b=0, mod=False):
-        for i in a:
-            if type(i) is not int:
-                raise TypeError("Vector a[] can only contain integers")
-        self.a = a
-
         if type(b) is not int:
             raise TypeError("Scalar b can only be an integer.")
         self.b = b
@@ -24,7 +19,7 @@ class RbSumsEq(_RainbowSim):
             raise TypeError("Boolean mod must be either", True, "for Zn or", False, "for [n].")
         self.mod = mod
 
-        super(RbSumsEq, self).__init__(n, len(a), RbSumsEq, (n, a, b, mod))
+        super(RbSumsEq, self).__init__(n, a, RbSumsEq, (n, a, b, mod))
 
     def _invert(self, i):
         """
@@ -58,8 +53,8 @@ class RbSumsEq(_RainbowSim):
         :return:
         string: Algebraic form of equation with a-coefficients and b-value
         """
-        eq = ""
+        eq = "Rb("
         for i in self.a:
             eq += str(i) + "x + "
-        eq = eq[:-2] + "= " + str(self.b) + ", mod = " + str(self.mod)
+        eq = eq[:-2] + "= " + str(self.b) + ", mod = " + str(self.mod) + ")"
         return eq
