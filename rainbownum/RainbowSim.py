@@ -1,14 +1,6 @@
 from .LinkedLists import SetLinkedList
 from .LinkedLists import ColoringLinkedList
-import time, sys, warnings, multiprocessing as mp, queue, itertools
-
-
-def _generate_process(initialize, params, start, time_limit, coloring, used, loop, queue):
-    eq = initialize(*params)
-    eq.set_time_limit(time_limit)
-    eq.start = start
-    eq._gen_colorings(coloring, used, loop, queue)
-    return
+import time, sys, warnings, multiprocessing as mp, queue, itertools, numpy as np
 
 
 class _RainbowSim:
@@ -29,84 +21,31 @@ class _RainbowSim:
         self.initialize = initialize
         self.params = params
 
-        self._generate_sets()
-
-        self.colorings = ColoringLinkedList()
+        self.sets = self._generate_sets()
 
         self.timeLimit = 43200  # 12 hours
-        self.start = 0
-
-        self.queue = mp.Queue()
-        self.processes = []
-        self.cores = mp.cpu_count()
-        if self.cores == 1:
-            self.splits = 1
-        elif self.cores == 2:
-            self.splits = 2  # two processes
-        elif self.cores <= 8:
-            self.splits = 3  # five processes
-        elif self.cores <= 16:
-            self.splits = 4  # 13? processes
-        else:
-            self.splits = 5
-        if "win" in sys.platform and sys.version_info[0] != 3 or sys.version_info[1] != 7 or sys.version_info[2] != 0:
-            warnings.warn("WARNING: Windows users must use Python 3.7.0 to take advantage of multiprocessing.")
-            self.splits = 1
-
-        # Due to current malfunctions multiprocessing is disabled until further notices
-        self.splits = 0
+        self.start = time.time()
 
     def _generate_sets(self):
         """
-        Generate sets for color solving.
+        Generate set matrix for coloring checking.
 
-        :return: None
+        :return: Set matrix 2-D ndarray
         """
-        self.sets = [SetLinkedList() for _ in range(self.n + 1)]
+        sets = np.array([])
         for combination in itertools.combinations(list(range(self.n)), self.k):
             for permutation in itertools.permutations(combination, self.k):
                 set = [self._invert(p) for p in permutation]
                 if self._is_valid_set(set):
-                    self._add_set(permutation)
+                    set_row = [0 if i in permutation else 1for i in self.n]
+                    sets = np.append(sets, [set_row], axis=0)
                     break
+        return sets
 
     def _gen_colorings(self, coloring, used, loop, queue):
-        if time.time() - self.start > self.timeLimit:
-            return
-        if loop == self.n:
-            return
-        for i in range(0, self.n):
-            if i != 0 and used[i - 1] == 0:
-                if loop == self.splits:
-                    temp = self.colorings.head
-                    i = 1
-                    while temp is not None:
-                        i += 1
-                        queue.put([temp.data, self.colorings.maxColors])
-                        temp = temp.next
-                return
-            used[i] += 1
-            coloring[loop] = i
-            if self._contains_rainbow_sum(coloring, loop):
-                used[i] -= 1
-                continue
-            if loop == self.splits - 1:
-                p = mp.Process(target=_generate_process, args=(self.initialize, self.params, self.start, self.timeLimit, coloring.copy(), used.copy(), loop + 1, self.queue))
-                self.processes.append(p)
-                p.start()
-            else:
-                self._gen_colorings(coloring, used, loop + 1, queue)
-            if loop == self.n - 1:
-                colors = 0
-                for j in used:
-                    if j == 0:
-                        break
-                    colors += 1
-                colors = max(coloring) + 1
-                self.colorings.add_coloring(coloring, colors)
-            used[i] -= 1
 
-    def _contains_rainbow_sum(self, coloring, new):
+
+    def _contains_rainbow_set(self, coloring, new):
         """
         Check whether coloring contains rainbow set in sets containing specific index.
 
@@ -249,8 +188,8 @@ class _RainbowSim:
         :return: None
         """
         for i in range(1, self.n):
-            if self._contains_rainbow_sum(coloring, i) is True:
-                print("INVALID: Coloring", coloring, "for n =", self.n, "contains rainbow sums :(")
+            if self._contains_rainbow_set(coloring, i) is True:
+                print("INVALID: Coloring", coloring, "for n =", self.n, "contains rainbow sets :(")
                 return
         print("VALID: Coloring", coloring, "for n =", self.n, "works! Yippee!")
 
@@ -287,6 +226,3 @@ class _RainbowSim:
         :return: None
         """
         self._sets(nums, True)
-
-    def disable_multiprocessing(self):
-        self.splits = 0
