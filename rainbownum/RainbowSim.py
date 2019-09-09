@@ -43,24 +43,7 @@ class _RainbowSim:
         return sets
 
     def _gen_colorings(self, coloring, used, loop, queue):
-
-
-    def _contains_rainbow_set(self, coloring, new):
-        """
-        Check whether coloring contains rainbow set in sets containing specific index.
-
-        :param coloring: Coloring to be checked for rainbow sets
-        :param new: Index contained in sets to check
-        :return: Boolean describing whether or not coloring contains a rainbow set at index
-        """
-        temp = self.sets[new].head.next
-        while temp is not None:
-            color_set = [coloring[i] for i in temp.data]
-            if max(temp.data) <= new:
-                if len(set(color_set)) == len(color_set):
-                    return True
-            temp = temp.next
-        return False
+        return
 
     def _add_set(self, set):
         """
@@ -180,18 +163,31 @@ class _RainbowSim:
         print("Time:", time.time() - self.start)
         return 1
 
+    def _check_coloring_matrix(self, coloring_matrix):
+        """
+        Check coloring matrix for rainbow sets.
+
+        :param coloring_matrix:  Coloring matrix to be checked
+        :return: Boolean validity value
+        """
+        result = self.sets.dot(coloring_matrix)
+        if np.amin([np.amax(row) for row in result]):
+            return False
+        return True
+
     def check_coloring(self, coloring):
         """
         Check coloring for rainbow sets.
 
         :param coloring: Coloring to be checked
-        :return: None
+        :return: Boolean validity value
         """
-        for i in range(1, self.n):
-            if self._contains_rainbow_set(coloring, i) is True:
-                print("INVALID: Coloring", coloring, "for n =", self.n, "contains rainbow sets :(")
-                return
-        print("VALID: Coloring", coloring, "for n =", self.n, "works! Yippee!")
+        coloring_matrix = []
+        if self._check_coloring_matrix(coloring_matrix):
+            print("VALID: Coloring", coloring, "for n =", self.n, "works! Yippee!")
+            return True
+        print("INVALID: Coloring", coloring, "for n =", self.n, "contains rainbow sets :(")
+        return False
 
     def set_time_limit(self, t):
         """
